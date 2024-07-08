@@ -52,8 +52,8 @@ export const SERVICESMENU: ServiceMenu[] = [
   },
   {
     id: 4,
-    name: "💻 Computer",
-    slug: "computer",
+    name: "💻 Programming & Tech",
+    slug: "programming-&-tech",
     items: [
       {
         name: "Routine Maintenance",
