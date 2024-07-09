@@ -25,7 +25,9 @@ const CreateNewGig = () => {
     <main className="pb-[127px]">
       <h2 className="mt-2 px-11">Submit a service</h2>
       <Tabs activeTab={activeTab} />
-      <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="px-11 md:px-0">
+        <Tab activeTab={activeTab} setActiveTab={setActiveTab} />
+      </div>
     </main>
   );
 };

@@ -10,7 +10,7 @@ interface IProps {
 
 const DescriptionStep = ({ activeTab, setActiveTab }: IProps) => {
   return (
-    <div className="w-[835px] mx-auto">
+    <div className="w-full md:w-[835px] md:mx-auto">
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
         <div className="flex flex-col gap-10">
           <Section>
@@ -26,8 +26,8 @@ const DescriptionStep = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2">
-              <Textarea className="h-[650px]" />
+            <div className="sm:col-span-2">
+              <Textarea className="h-[500px] sm:h-[650px]" />
             </div>
           </Section>
         </div>

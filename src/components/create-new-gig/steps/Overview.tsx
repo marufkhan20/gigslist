@@ -12,7 +12,7 @@ interface IProps {
 
 const Overview = ({ activeTab, setActiveTab }: IProps) => {
   return (
-    <div className="w-[835px] mx-auto">
+    <div className="w-full md:w-[835px] md:mx-auto">
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
         <div className="flex flex-col gap-10">
           <Section>
@@ -29,7 +29,7 @@ const Overview = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <Textarea
                 placeholder="I will do something I'm really good at or that my business does"
                 className="font-semibold text-dark"
@@ -45,8 +45,8 @@ const Overview = ({ activeTab, setActiveTab }: IProps) => {
               title="Category"
               description="Choose the category and subcategory most suitable for your Gig."
             />
-            <div className="col-span-2">
-              <div className="grid grid-cols-2 gap-9">
+            <div className="sm:col-span-2">
+              <div className="grid sm:grid-cols-2 gap-9">
                 <Select>
                   <option value="">Select Category</option>
                   <option value="">Technology</option>
@@ -64,7 +64,7 @@ const Overview = ({ activeTab, setActiveTab }: IProps) => {
               title="Business Info"
               description="Add your name or business name and the best email address for customers to contact you."
             />
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <div className="flex flex-col gap-4">
                 <Input type="text" placeholder="Your Name / Business Name" />
                 <Input type="email" placeholder="Contact Email" />
@@ -85,7 +85,7 @@ const Overview = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <Description
                 title="Relevant keywords"
                 description="Enter search terms you feel your buyers will use when looking for your service."

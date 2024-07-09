@@ -11,7 +11,7 @@ interface IProps {
 
 const Location = ({ activeTab, setActiveTab }: IProps) => {
   return (
-    <div className="w-[835px] mx-auto">
+    <div className="w-full md:w-[835px] md:mx-auto">
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
         <div className="flex flex-col gap-10">
           <Section>
@@ -24,8 +24,8 @@ const Location = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2">
-              <div className="flex items-center gap-7">
+            <div className="sm:col-span-2">
+              <div className="flex flex-col sm:flex-row items-center gap-7">
                 <Select>
                   <option value="">Select State</option>
                 </Select>
@@ -46,9 +46,9 @@ const Location = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2 flex flex-col gap-4">
+            <div className="sm:col-span-2 flex flex-col gap-4">
               <Input type="text" placeholder="Street Address" />
-              <div className="flex items-center gap-7">
+              <div className="flex flex-col sm:flex-row items-center gap-7">
                 <Select>
                   <option value="">Select State</option>
                 </Select>

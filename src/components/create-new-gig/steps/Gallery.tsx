@@ -9,7 +9,7 @@ interface IProps {
 
 const Gallery = ({ activeTab, setActiveTab }: IProps) => {
   return (
-    <div className="w-[835px] mx-auto">
+    <div className="w-full md:w-[835px] md:mx-auto">
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
         <div className="flex flex-col gap-10">
           <Section>
@@ -25,7 +25,7 @@ const Gallery = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2">
+            <div className="sm:col-span-2">
               <div className="h-[154px] w-[140px] relative">
                 <div className="w-[140px] h-[140px] rounded bg-[#F6F6F7] flex items-center justify-center flex-col gap-1 hover:cursor-pointer border border-[#f6f6f7] transition-all hover:border-primary">
                   <img src="/images/icons/image.png" alt="" />
@@ -62,7 +62,7 @@ const Gallery = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2 grid grid-cols-2 gap-9">
+            <div className="sm:col-span-2 grid sm:grid-cols-2 gap-9">
               <div className="h-[154px] relative">
                 <div className="h-[140px] rounded bg-[#F6F6F7] flex items-center justify-center flex-col gap-1 hover:cursor-pointer border border-[#f6f6f7] transition-all hover:border-primary">
                   <img src="/images/icons/Play.png" alt="" />

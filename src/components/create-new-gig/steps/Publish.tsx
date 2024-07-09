@@ -10,7 +10,7 @@ interface IProps {
 
 const Publish = ({ activeTab, setActiveTab }: IProps) => {
   return (
-    <div className="w-[835px] mx-auto">
+    <div className="w-full md:w-[835px] md:mx-auto">
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
         <div className="flex flex-col gap-10">
           <Section>
@@ -25,11 +25,11 @@ const Publish = ({ activeTab, setActiveTab }: IProps) => {
                 </>
               }
             />
-            <div className="col-span-2 flex flex-col gap-4">
+            <div className="sm:col-span-2 flex flex-col gap-4">
               <h3 className="text-[15px]">Total amount charged: $10.00 USD</h3>
               <Input type="text" placeholder="Cardholder Name" />
               <Input type="number" placeholder="Card Number" />
-              <div className="grid grid-cols-2 gap-9">
+              <div className="grid sm:grid-cols-2 gap-9">
                 <Input type="text" placeholder="MM/YY" />
                 <Input type="text" placeholder="CVC" />
                 <Input type="text" placeholder="ZIP Code" />
