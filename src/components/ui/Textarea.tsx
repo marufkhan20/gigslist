@@ -1,32 +1,26 @@
 import { cn } from "../../lib/utils";
 
 interface IProps {
-  type: string;
   placeholder?: string;
   // value: string;
   // onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   icon?: string;
   className?: string;
-  id?: string;
 }
 
-const Input = ({
-  type,
+const Textarea = ({
   placeholder,
   // value,
   // onChange,
   icon,
   className,
-  id,
 }: IProps) => {
   return (
     <div className="relative w-full">
-      <input
-        type={type}
+      <textarea
         // value={value}
         // onChange={onChange}
         placeholder={placeholder}
-        id={id}
         className={cn(
           `w-full inline-block transition-all focus:ring-1 border border-[##E1E3EA] rounded py-3 px-[18px] ${
             icon ? "pl-14" : "pl-[18px]"
@@ -45,4 +39,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Textarea;
