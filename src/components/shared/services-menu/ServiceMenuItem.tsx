@@ -27,7 +27,7 @@ const ServiceMenuItem = ({
       </h3>
 
       {selectedService === service?.slug && service?.items && (
-        <div className="absolute top-[120%] left-0 min-w-[400px] bg-white rounded border border-[#F1F1F2] shadow-service-items py-5">
+        <div className="absolute top-[120%] left-0 min-w-[400px] bg-white rounded border border-[#F1F1F2] shadow-service-items z-50 py-5">
           {service?.items?.map((item) => (
             <p className="px-4 py-3 font-medium text-base leading-[16px] cursor-pointer transition-all hover:bg-primary-light hover:text-primary">
               {item?.name}

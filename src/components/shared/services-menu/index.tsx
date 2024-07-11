@@ -5,7 +5,7 @@ import ServiceMenuItem from "./ServiceMenuItem";
 const ServicesMenu = () => {
   const [selectedService, setSelectedService] = useState("all");
   return (
-    <section className="px-11 pb-7 flex items-center gap-[18px]">
+    <section className="px-5 sm:px-11 pb-7 flex items-center flex-wrap gap-5">
       {SERVICESMENU?.map((service) => (
         <ServiceMenuItem
           service={service}

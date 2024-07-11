@@ -32,7 +32,7 @@ const ServiceDetails = () => {
     <main className="pb-[100px]">
       <ServicesMenu />
 
-      <section className="px-[100px] mt-6">
+      <section className="px-5 sm:px-11 lg:px-[100px] mt-6">
         {/* navigation */}
         <div className="flex items-center justify-between gap-5 flex-wrap">
           <ul className="flex items-center gap-3">
@@ -79,8 +79,8 @@ const ServiceDetails = () => {
         </div>
 
         {/* details */}
-        <div className="grid grid-cols-5 gap-[100px] mt-[38px]">
-          <div className="col-span-3">
+        <div className="grid lg:grid-cols-5 gap-[100px] mt-[38px]">
+          <div className="lg:col-span-3">
             <h2 className="text-dark text-[28px] leading-9 font-semibold">
               {title}
             </h2>
@@ -101,7 +101,7 @@ const ServiceDetails = () => {
             </div>
 
             <div className="mt-6">
-              <div className="slider-container">
+              <div className="hidden lg:block slider-container w-full">
                 <Slider {...settings}>
                   <div>
                     <img className="w-full" src="/images/services/1.png" />
@@ -160,7 +160,7 @@ const ServiceDetails = () => {
 
             <div className="mt-5 pt-14 border-t">
               <h2 className="text-lg leading-7">About This Post</h2>
-              <div className="mt-7 border rounded p-6 grid grid-cols-2 gap-4">
+              <div className="mt-7 border rounded p-6 grid sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-[18px]">
                   <div>
                     <span className="text-[#5E6278]">Post ID</span>
@@ -214,7 +214,7 @@ const ServiceDetails = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-2">
+          <div className="lg:col-span-2">
             <Packages />
             <SellerLocation />
           </div>

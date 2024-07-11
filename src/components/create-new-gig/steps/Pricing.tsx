@@ -41,7 +41,7 @@ const Pricing = ({ activeTab, setActiveTab }: IProps) => {
                   </div>
 
                   <div className="mt-2">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                       <label
                         className="text-[15px] font-semibold"
                         htmlFor="basic-price"
@@ -50,7 +50,7 @@ const Pricing = ({ activeTab, setActiveTab }: IProps) => {
                       </label>
                       <Input
                         id="basic-price"
-                        className="w-auto"
+                        // className="w-auto"
                         placeholder="$"
                         type="number"
                       />
@@ -73,7 +73,7 @@ const Pricing = ({ activeTab, setActiveTab }: IProps) => {
                   </div>
 
                   <div className="mt-2">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                       <label
                         className="text-[15px] font-semibold"
                         htmlFor="advance-price"
@@ -105,7 +105,7 @@ const Pricing = ({ activeTab, setActiveTab }: IProps) => {
                   </div>
 
                   <div className="mt-2">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                       <label
                         className="text-[15px] font-semibold"
                         htmlFor="premium-price"
