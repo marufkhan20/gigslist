@@ -21,6 +21,7 @@ export default {
         "success-light": "#D6EEDD",
         "white-active": "#F5F8FA",
         dark: "#181C32",
+        heading: "#3F4254",
       },
       boxShadow: {
         "service-items": "0px 8px 14px 0px rgba(15, 42, 81, 0.08)",

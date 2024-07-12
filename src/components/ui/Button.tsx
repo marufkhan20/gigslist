@@ -5,7 +5,7 @@ interface ButtonProps {
   children: React.ReactNode;
   className?: string;
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "secondary" | "danger" | "border";
   type?: "submit" | "button" | "reset" | undefined;
   to?: string;
 }
@@ -18,9 +18,11 @@ const Button = ({
   type = "button",
   to,
 }: ButtonProps) => {
-  const styles = `py-[14px] px-4 rounded text-base leading-[14px] font-medium transition-all ${
+  const styles = `py-[14px] px-4 rounded text-base leading-[14px] font-medium border border-transparent transition-all ${
     variant === "primary"
       ? "bg-primary text-white hover:bg-primary-active"
+      : variant === "border"
+      ? "border-primary text-primary hover:bg-primary hover:text-white"
       : "text-[#5E6278]"
   }`;
 

@@ -19,3 +19,8 @@ interface Service {
   location: string;
   fromPrice?: number;
 }
+
+interface SidebarMenu {
+  name: string;
+  link: string;
+}
