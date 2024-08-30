@@ -35,7 +35,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // set public folder
 app.use(express.static("public"));
-app.use(bodyParser.raw({ type: "application/json" }));
 
 app.post("/create-subscription", async (req, res) => {
   const { email, paymentMethodId, price } = req.body;
@@ -85,7 +84,7 @@ app.post("/webhook", (req, res) => {
 
   let event;
 
-  console.log("body", req.body);
+  console.log("raw body", req.body.toString());
 
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
