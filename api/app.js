@@ -81,7 +81,7 @@ app.post("/create-subscription", async (req, res) => {
 
 app.post("/webhook", (req, res) => {
   const sig = req.headers["stripe-signature"];
-  const endpointSecret = "your-webhook-secret-here";
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
 
   let event;
 
