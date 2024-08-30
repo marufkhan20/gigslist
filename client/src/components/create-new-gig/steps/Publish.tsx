@@ -106,15 +106,18 @@ const CheckoutForm: React.FC = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:8000/create-subscription", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: "customer@example.com",
-        paymentMethodId: paymentMethod?.id,
-        price: dynamicPrice || 10,
-      }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_API_URL}/create-subscription`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: "customer@example.com",
+          paymentMethodId: paymentMethod?.id,
+          price: dynamicPrice || 10,
+        }),
+      }
+    );
 
     const subscription = await response.json();
 
