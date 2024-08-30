@@ -5,7 +5,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateNewGigLayout from "../../../layouts/CreateNewGigLayout";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
@@ -79,6 +79,10 @@ const CheckoutForm: React.FC = () => {
 
   const [cardholderName, setCardholderName] = useState<string>("");
   const [dynamicPrice, setDynamicPrice] = useState<number>(10); // Example dynamic price
+
+  useEffect(() => {
+    setDynamicPrice(10);
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
