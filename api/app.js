@@ -35,6 +35,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // set public folder
 app.use(express.static("public"));
+app.use(bodyParser.raw({ type: "application/json" }));
 
 app.post("/create-subscription", async (req, res) => {
   const { email, paymentMethodId, price } = req.body;
@@ -78,7 +79,7 @@ app.post("/create-subscription", async (req, res) => {
   }
 });
 
-app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+app.post("/webhook", (req, res) => {
   const sig = req.headers["stripe-signature"];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
 
