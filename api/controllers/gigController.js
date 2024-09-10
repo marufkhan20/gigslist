@@ -5,6 +5,40 @@ const path = require("path");
 // get all gigs controller
 const getAllGigsController = async (req, res) => {
   try {
+    const { limit = 12, state, city, title } = req.query;
+
+    let searchOptions = {};
+
+    // Construct search options based on provided query parameters
+    if (state && state !== "null") {
+      searchOptions.state = new RegExp(state, "i"); // Case-insensitive search
+    }
+
+    if (city && city !== "null") {
+      searchOptions.city = new RegExp(city, "i"); // Case-insensitive search
+    }
+
+    if (title && title !== "null") {
+      searchOptions.title = new RegExp(title, "i");
+    }
+
+    console.log("searchOptions", searchOptions);
+
+    // Get all gigs based on searchOptions
+    const gigs = await Gig.find(searchOptions).limit(limit).exec();
+
+    console.log("gigs", gigs);
+
+    res.status(200).json(gigs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
+// get user all gigs controller
+const getUserAllGigsController = async (req, res) => {
+  try {
     const { _id, role } = req.user || {};
 
     let gigs;
@@ -127,6 +161,7 @@ const uploadFileController = async (req, res) => {
 
 module.exports = {
   getAllGigsController,
+  getUserAllGigsController,
   getSingleGigController,
   createNewGigController,
   uploadFileController,

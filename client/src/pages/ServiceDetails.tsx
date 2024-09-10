@@ -1,22 +1,56 @@
-import { Link, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Link, useLocation, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import Packages from "../components/service-details/Packages";
 import SellerLocation from "../components/service-details/SellerLocation";
 import ServicesMenu from "../components/shared/services-menu";
-import { SERVICES } from "../constants";
+import { getGig } from "../http/api";
+import { calculateTimeAgo } from "../lib/utils";
 
 const ServiceDetails = () => {
-  const { id } = useParams();
-  // get service details
-  const service = SERVICES?.find((item) => item._id === Number(id));
-  const { title, companyImg, companyName, location } = service || {};
+  const { id } = useParams<{ id: string }>();
+  const { pathname } = useLocation();
+
+  // get existing gig
+  const { data: gig } = useQuery<Gig>({
+    queryKey: ["getGig"],
+    queryFn: async () => {
+      const { data } = await getGig(id || "");
+      return data;
+    },
+  });
+
+  const {
+    _id,
+    businessEmail,
+    offeredRemotely,
+    businessName,
+    category,
+    // city,
+    streetCity,
+    description,
+    images,
+    logo,
+    packages,
+    // price,
+    // state,
+    subCategory,
+    title,
+    // video,
+    streetState,
+    // user,
+    createdAt,
+  } = gig || {};
 
   // slider settings
   const settings = {
     customPaging: function (i: number) {
       return (
         <a>
-          <img className="w-[100px]!" src={`/images/services/${i + 1}.png`} />
+          <img
+            className="w-[100px]!"
+            src={images?.length > 0 ? images[i] : ""}
+          />
         </a>
       );
     },
@@ -28,6 +62,24 @@ const ServiceDetails = () => {
     slidesToScroll: 1,
     navigate: true,
   };
+
+  // calculate time ago
+  const timeAgo = calculateTimeAgo(createdAt || "");
+
+  const handleEmailClick = () => {
+    const email = businessEmail; // Replace with your desired email address
+    const subject = "Your Subject Here"; // Optional: Pre-fill the subject
+    const body = "Your message here"; // Optional: Pre-fill the email body
+
+    // Construct the mailto link
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    // Open the mailto link
+    window.location.href = mailtoLink;
+  };
+
   return (
     <main className="pb-[100px]">
       <ServicesMenu />
@@ -37,65 +89,67 @@ const ServiceDetails = () => {
         <div className="flex items-center justify-between gap-5 flex-wrap">
           <ul className="flex items-center gap-3">
             <li>
-              <Link to="#">
+              <Link to="/">
                 <img src="/images/icons/Home.png" alt="" />
               </Link>
             </li>
             <li className="w-[1px] h-3 bg-[#A1A5B7]" />
             <li>
               <Link className="font-medium text-primary" to="#">
-                Labor & Moving
+                {category}
               </Link>
             </li>
             <li className="w-[1px] h-3 bg-[#A1A5B7]" />
             <li>
               <Link className="font-medium text-primary" to="#">
-                Movers
+                {subCategory}
               </Link>
             </li>
           </ul>
 
-          <ul className="flex items-center gap-3">
-            <li>
-              <Link
-                className="font-medium text-primary flex items-center gap-3"
-                to="#"
-              >
-                <img src="/images/icons/left.png" alt="" />
-                Prev
-              </Link>
-            </li>
-            <li className="w-[1px] h-3 bg-[#A1A5B7]" />
-            <li>
-              <Link
-                className="font-medium flex items-center gap-3 text-primary"
-                to="#"
-              >
-                Next
-                <img src="/images/icons/right.png" alt="" />
-              </Link>
-            </li>
-          </ul>
+          {pathname?.includes("/service-details") && (
+            <ul className="flex items-center gap-3">
+              <li>
+                <Link
+                  className="font-medium text-primary flex items-center gap-3"
+                  to="#"
+                >
+                  <img src="/images/icons/left.png" alt="" />
+                  Prev
+                </Link>
+              </li>
+              <li className="w-[1px] h-3 bg-[#A1A5B7]" />
+              <li>
+                <Link
+                  className="font-medium flex items-center gap-3 text-primary"
+                  to="#"
+                >
+                  Next
+                  <img src="/images/icons/right.png" alt="" />
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
 
         {/* details */}
         <div className="grid lg:grid-cols-5 gap-[100px] mt-[38px]">
           <div className="lg:col-span-3">
             <h2 className="text-dark text-[28px] leading-9 font-semibold">
-              {title}
+              I will {title}
             </h2>
             <div className="mt-5 flex items-center gap-4">
               <img
                 className="w-[50px] h-[50px] rounded-full"
-                src={`/images/services/${companyImg}`}
+                src={logo}
                 alt=""
               />
               <div>
                 <h4 className="font-semibold text-sm leading-[21px]">
-                  {companyName}
+                  {businessName}
                 </h4>
                 <span className="text-dark text-sm leading-[21px]">
-                  {location}
+                  {streetState}
                 </span>
               </div>
             </div>
@@ -103,18 +157,11 @@ const ServiceDetails = () => {
             <div className="mt-6">
               <div className="hidden lg:block slider-container w-full">
                 <Slider {...settings}>
-                  <div>
-                    <img className="w-full" src="/images/services/1.png" />
-                  </div>
-                  <div>
-                    <img className="w-full" src="/images/services/2.png" />
-                  </div>
-                  <div>
-                    <img className="w-full" src="/images/services/3.png" />
-                  </div>
-                  <div>
-                    <img className="w-full" src="/images/services/4.png" />
-                  </div>
+                  {images?.map((image: string) => (
+                    <div>
+                      <img src={image} alt={image} className="w-full" />
+                    </div>
+                  ))}
                 </Slider>
               </div>
             </div>
@@ -123,7 +170,7 @@ const ServiceDetails = () => {
               <h3 className="font-semibold text-lg leading-7 mb-6">
                 About This Gig
               </h3>
-              <p>
+              {/* <p>
                 Available now for your last-minute moves. We provide the best
                 service man with the van. 1 man or 2 men with a van or truck. We
                 do any type of moving services!
@@ -155,7 +202,8 @@ const ServiceDetails = () => {
                 <br />
                 <br />
                 Contact Owner & Operator Dave (929-231-2100)
-              </p>
+              </p> */}
+              <p>{description}</p>
             </div>
 
             <div className="mt-5 pt-14 border-t">
@@ -164,18 +212,20 @@ const ServiceDetails = () => {
                 <div className="flex flex-col gap-[18px]">
                   <div>
                     <span className="text-[#5E6278]">Post ID</span>
-                    <h3 className="font-medium text-[15px]">7748846438</h3>
+                    <h3 className="font-medium text-[15px]">{_id}</h3>
                   </div>
                   <div>
                     <span className="text-[#5E6278]">Offered Remotely</span>
-                    <h3 className="font-medium text-[15px]">No</h3>
+                    <h3 className="font-medium text-[15px]">
+                      {offeredRemotely ? "Yes" : "No"}
+                    </h3>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-[18px]">
                   <div>
                     <span className="text-[#5E6278]">Posted</span>
-                    <h3 className="font-medium text-[15px]">20 minutes ago</h3>
+                    <h3 className="font-medium text-[15px]">{timeAgo}</h3>
                   </div>
                   <div>
                     <span className="text-[#5E6278]">Share This Post</span>
@@ -215,8 +265,11 @@ const ServiceDetails = () => {
             </div>
           </div>
           <div className="lg:col-span-2">
-            <Packages />
-            <SellerLocation />
+            <Packages
+              handleEmailClick={handleEmailClick}
+              packages={packages || []}
+            />
+            <SellerLocation state={streetState || ""} city={streetCity || ""} />
           </div>
         </div>
       </section>

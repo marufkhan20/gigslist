@@ -1,7 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Tab from "./Tab";
 
 const Tabs = ({ activeTab }: { activeTab: number }) => {
+  // get gig id
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const gigId: string = searchParams.get("gigId") || "";
+
   return (
     <div className="mt-12 px-5 py-[18px] border-y flex items-center justify-center gap-4 flex-wrap">
       <Tab activeTab={activeTab} step={1} name="Overview" />
@@ -14,7 +19,8 @@ const Tabs = ({ activeTab }: { activeTab: number }) => {
       {activeTab === 6 && (
         <div className="ml-12">
           <Link
-            to="#"
+            to={`/service-preview/${gigId}`}
+            target="_blank"
             className="flex items-center gap-1 px-[10px] py-2 text-primary text-xs font-medium rounded border transition-all hover:border-primary"
           >
             <img src="/images/icons/Show.png" alt="" />

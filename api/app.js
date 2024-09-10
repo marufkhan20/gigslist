@@ -29,6 +29,39 @@ app.use(
     origin: [process.env.CLIENT_URL],
   })
 );
+
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+  const sig = req.headers["stripe-signature"];
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
+
+  let event;
+
+  console.log("raw body", req.body.toString());
+
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    console.log("event", event);
+  } catch (err) {
+    console.log(`⚠️  Webhook signature verification failed.`, err.message);
+    return res.sendStatus(400);
+  }
+
+  switch (event.type) {
+    case "invoice.payment_succeeded":
+      const invoice = event.data.object;
+      console.log("Invoice payment succeeded:", invoice);
+      break;
+    case "customer.subscription.deleted":
+      const subscription = event.data.object;
+      console.log("Subscription deleted:", subscription);
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  res.sendStatus(200);
+});
+
 app.use(morgan("dev"));
 app.use(express.json({ limit: "200mb" }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -76,38 +109,6 @@ app.post("/create-subscription", async (req, res) => {
     console.error("Error creating subscription:", error);
     res.status(400).json({ error: error?.message });
   }
-});
-
-app.post("/webhook", (req, res) => {
-  const sig = req.headers["stripe-signature"];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
-
-  let event;
-
-  console.log("raw body", req.body.toString());
-
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    console.log("event", event);
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed.`, err.message);
-    return res.sendStatus(400);
-  }
-
-  switch (event.type) {
-    case "invoice.payment_succeeded":
-      const invoice = event.data.object;
-      console.log("Invoice payment succeeded:", invoice);
-      break;
-    case "customer.subscription.deleted":
-      const subscription = event.data.object;
-      console.log("Subscription deleted:", subscription);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  res.sendStatus(200);
 });
 
 // all routes

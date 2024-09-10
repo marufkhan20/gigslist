@@ -1,6 +1,11 @@
 import { useState } from "react";
 
-const Packages = () => {
+interface IProps {
+  packages: Package[];
+  handleEmailClick: () => void;
+}
+
+const Packages = ({ packages, handleEmailClick }: IProps) => {
   const [active, setActive] = useState("basic");
   return (
     <div className="border border-[#D8D8E5] mb-[30px]">
@@ -13,7 +18,7 @@ const Packages = () => {
           }`}
           onClick={() => setActive("basic")}
         >
-          Basic
+          {packages[0]?.name || "Basic"}
         </button>
         <button
           className={`flex-1 py-[18px] px-6 text-[15px] font-semibold border-b-[3px] border-x border-x-[#D8D8E5] ${
@@ -23,7 +28,7 @@ const Packages = () => {
           }`}
           onClick={() => setActive("advance")}
         >
-          Advance
+          {packages[1]?.name || "Advance"}
         </button>
         <button
           className={`flex-1 py-[18px] px-6 text-[15px] font-semibold border-b-[3px] ${
@@ -33,16 +38,17 @@ const Packages = () => {
           }`}
           onClick={() => setActive("premium")}
         >
-          Premium
+          {packages[2]?.name || "Premium"}
         </button>
       </div>
 
       <div className="mt-8 px-6 pb-11">
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <h2>
-            {(active === "basic" && "BASIC SERVICE") ||
-              (active === "advance" && "ADVANCE SERVICE") ||
-              (active === "premium" && "PREMIUM SERVICE")}
+          <h2 className="uppercase">
+            {(active === "basic" && packages[0]?.name) ||
+              (active === "advance" && packages[1]?.name) ||
+              (active === "premium" && packages[2]?.name)}{" "}
+            Service
           </h2>
 
           <h2 className="font-medium text-xl">
@@ -53,15 +59,15 @@ const Packages = () => {
         </div>
 
         <p className="mt-11">
-          {(active === "basic" &&
-            "Basic Package Only Laptop-scenes Includes, Background Music,Logo, and 720HD Video") ||
-            (active === "advance" &&
-              "Advance Package Only Laptop-scenes Includes, Background Music,Logo, and 720HD Video") ||
-            (active === "premium" &&
-              "Premium Package Only Laptop-scenes Includes, Background Music,Logo, and 720HD Video")}
+          {(active === "basic" && packages[0]?.description) ||
+            (active === "advance" && packages[1]?.description) ||
+            (active === "premium" && packages[2]?.description)}
         </p>
 
-        <button className="mt-12 font-medium text-base leading-4 border border-dark rounded transition-all outline-none hover:border-primary hover:bg-primary hover:text-white block w-full py-4 px-5">
+        <button
+          className="mt-12 font-medium text-base leading-4 border border-dark rounded transition-all outline-none hover:border-primary hover:bg-primary hover:text-white block w-full py-4 px-5"
+          onClick={handleEmailClick}
+        >
           Contact Seller
         </button>
       </div>

@@ -33,7 +33,7 @@ const Location = ({
   const [offeredRemotely, setOfferedRemotely] = useState(false);
   const [cities, setCities] = useState<City[]>();
 
-  // set sub categories
+  // set cities
   useEffect(() => {
     if (state) {
       // Find the category item

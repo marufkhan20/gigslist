@@ -24,6 +24,10 @@ export const router = createBrowserRouter([
         element: <ServiceDetails />,
       },
       {
+        path: "/service-preview/:id",
+        element: <ServiceDetails />,
+      },
+      {
         path: "",
         element: <PrivateLayout />,
         children: [

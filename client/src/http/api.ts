@@ -27,6 +27,8 @@ export const deleteBilling = (id: string) => api.delete(`/api/billings/${id}`);
 export const createGig = (gig: Gig) => api.post("/api/gigs", gig);
 export const getGig = (id: string) => api.get(`/api/gigs/${id}`);
 export const getGigs = () => api.get(`/api/gigs`);
+export const getAllGigs = (query?: string) =>
+  api.get(query ? `/api/gigs/all-gigs${query || "?"}` : `/api/gigs/all-gigs`);
 
 // upload files
 export const uploadFile = (formData: FormData, id: string) =>

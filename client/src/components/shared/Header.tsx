@@ -1,6 +1,12 @@
 import { State } from "country-state-city";
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { METRO_AREAS } from "../../constants";
 import AuthLayout from "../../layouts/AuthLayout";
 import { useAuthStore } from "../../store";
 import Button from "../ui/Button";
@@ -13,8 +19,39 @@ const Header = () => {
   const [showSearchBar, setShowSearchBar] = useState<boolean>(false);
   const { auth } = useAuthStore();
   const { user } = auth || {};
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [cities, setCities] = useState<City[]>();
+  const [search, setSearch] = useState("");
+
+  const [searchParams] = useSearchParams();
+  const stateQuery = searchParams.get("state");
+  const cityQuery = searchParams.get("city");
+  const titleQuery = searchParams.get("title");
+
+  useEffect(() => {
+    setState(stateQuery || "");
+    setSearch(titleQuery || "");
+    setCity(cityQuery || "");
+  }, [stateQuery, cityQuery, titleQuery]);
+
+  // set cities
+  useEffect(() => {
+    if (state) {
+      // Find the category item
+      const stateItem = METRO_AREAS.find((item) => item.name === state);
+      setCities(stateItem ? stateItem.cities : []);
+    }
+  }, [state]);
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (city || state || search) {
+      navigate(`/?state=${state}&city=${city}&title=${search}`);
+    }
+  }, [state, city, navigate, search]);
   return (
     <>
       <Link
@@ -28,18 +65,40 @@ const Header = () => {
           <Link to="/">
             <img className="w-[130px]" src="/images/logo.png" alt="logo" />
           </Link>
-          {pathname === "/" && (
+          {(pathname === "/" ||
+            pathname.includes("service-details") ||
+            pathname.includes("service-preview")) && (
             <div className="hidden lg:flex items-center gap-4 flex-1">
-              <Select>
-                <option value="">Select State</option>
+              <Select onChange={(e) => setState(e.target.value)}>
+                <option value="null">Select State</option>
+                {METRO_AREAS.map((item) => (
+                  <option
+                    selected={item.name === state}
+                    value={item.name}
+                    key={item.id}
+                  >
+                    {item.name}
+                  </option>
+                ))}
               </Select>
-              <Select>
-                <option value="">Select City</option>
+              <Select onChange={(e) => setCity(e.target.value)}>
+                <option value="null">Select City</option>
+                {cities?.map((item) => (
+                  <option
+                    selected={item.name === city}
+                    value={item.name}
+                    key={item.id}
+                  >
+                    {item.name}
+                  </option>
+                ))}
               </Select>
               <Input
                 placeholder="Search services"
                 type="text"
                 icon="search.png"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
           )}

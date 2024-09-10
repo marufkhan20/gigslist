@@ -120,6 +120,7 @@ interface Gig {
   logo?: string;
   video?: string;
   images?: Array;
+  createdAt?: string;
 }
 
 interface SubCategory {
