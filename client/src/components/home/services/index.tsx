@@ -8,7 +8,7 @@ interface IProps {
 
 const Services = ({ loading, gigs }: IProps) => {
   return (
-    <section className="px-5 sm:px-11 grid sm:grid-cols-2 pb-10 md:grid-cols-3 lg:grid-cols-4 gap-14">
+    <section className="px-5 sm:px-11 grid sm:grid-cols-2 pb-10 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {loading && (
         <>
           <ServiceSkeleton />

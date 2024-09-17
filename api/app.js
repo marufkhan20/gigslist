@@ -36,8 +36,6 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
 
   let event;
 
-  console.log("raw body", req.body.toString());
-
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
     console.log("event", event);
@@ -47,7 +45,7 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
   }
 
   switch (event.type) {
-    case "invoice.payment_succeeded":
+    case "invoice.created":
       const invoice = event.data.object;
       console.log("Invoice payment succeeded:", invoice);
       break;
@@ -70,7 +68,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 
 app.post("/create-subscription", async (req, res) => {
-  const { email, paymentMethodId, price } = req.body;
+  const { email, paymentMethodId, price, gigId } = req.body;
 
   try {
     const customer = await stripe.customers.create({
@@ -98,6 +96,9 @@ app.post("/create-subscription", async (req, res) => {
           },
         },
       ],
+      metadata: {
+        gigId,
+      },
       expand: ["latest_invoice.payment_intent"],
     });
 

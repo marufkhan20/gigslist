@@ -136,9 +136,10 @@ const loginController = async (req, res) => {
       };
 
       // generate token
-      const token = jwt.sign(userObject, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRY,
+      const token = jwt.sign(userObject, "secret", {
+        expiresIn: "10m",
       });
+      console.log(jwt.decode(token));
 
       res.status(200).json({
         user: userObject,

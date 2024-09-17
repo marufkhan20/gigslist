@@ -30,6 +30,14 @@ const Posts = () => {
         router(`/create-new-gig?gigId=${selectedGig?._id}`);
       }
     }
+
+    if (action && action === "view") {
+      if (selectedGig?.status === "active") {
+        router(`/service-details/${selectedGig?._id}`);
+      } else {
+        router(`/service-preview/${selectedGig?._id}`);
+      }
+    }
   }, [action, router, selectedGig]);
   return (
     <div>
@@ -62,7 +70,10 @@ const Posts = () => {
                   Status
                 </th>
                 <th className="text-[15px] text-heading font-semibold pb-4 text-left">
-                  Auto-Renew
+                  Sales
+                </th>
+                <th className="text-[15px] text-heading font-semibold pb-4 text-left">
+                  Earnings
                 </th>
                 <th className="text-[15px] text-heading font-semibold pb-4 text-left">
                   Actions
@@ -86,12 +97,27 @@ const Posts = () => {
                     </p>
                   </td>
                   <td>
-                    <button className="p-[7px] bg-success-light rounded text-success text-xs font-semibold cursor-default">
-                      {gig?.status || "Draft"}
-                    </button>
+                    {gig?.status === "draft" && (
+                      <button className="p-[7px] bg-gray-100 rounded text-gray-500 text-xs font-semibold cursor-default">
+                        Draft
+                      </button>
+                    )}
+
+                    {gig?.status === "active" && (
+                      <button className="p-[7px] bg-primary-light rounded text-primary text-xs font-semibold cursor-default">
+                        Active
+                      </button>
+                    )}
+
+                    {gig?.status === "deactive" && (
+                      <button className="p-[7px] bg-[#FBD9D7] rounded text-[#EA4335] text-xs font-semibold cursor-default">
+                        Deactive
+                      </button>
+                    )}
                   </td>
-                  <td>
-                    <div className="toggle-switch">
+                  <td className="font-medium">
+                    0
+                    {/* <div className="toggle-switch">
                       <input
                         type="checkbox"
                         id="enabled"
@@ -101,8 +127,9 @@ const Posts = () => {
                       <label htmlFor="enabled" className="toggle-switch-label">
                         <div className="toggle-switch-dot"></div>
                       </label>
-                    </div>
+                    </div> */}
                   </td>
+                  <td className="font-medium">$0.00</td>
                   <td>
                     <select
                       className="px-[10px] py-[7px] bg-[#F6F6F7] rounded text-sm font-medium text-[#7E8299] outline-none"

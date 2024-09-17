@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useSearchParams } from "react-router-dom";
@@ -30,13 +30,14 @@ const Home = () => {
       );
       return data;
     },
+    placeholderData: keepPreviousData,
   });
+
+  console.log("isLoading", isLoading);
 
   useEffect(() => {
     refetch();
   }, [city, state, title, refetch]);
-
-  console.log("gigs", gigs);
 
   useEffect(() => {
     if (inView) {
@@ -47,6 +48,11 @@ const Home = () => {
     <main>
       <ServicesMenu />
       <Services loading={isLoading} gigs={gigs || []} />
+      {/* {isRefetching && (
+        <div className="flex items-center justify-center">
+          <ImSpinner9 className="transition-all text-3xl animate-spin" />
+        </div>
+      )} */}
       <div ref={ref} style={{ height: "1px" }} />
     </main>
   );

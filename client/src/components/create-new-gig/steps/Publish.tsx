@@ -17,9 +17,10 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 interface IProps {
   activeTab: number;
   setActiveTab: (value: number) => void;
+  gigId: string;
 }
 
-const Publish = ({ activeTab, setActiveTab }: IProps) => {
+const Publish = ({ activeTab, setActiveTab, gigId }: IProps) => {
   return (
     <CreateNewGigLayout>
       <div className="mt-14 mb-6 border pb-20 rounded p-7">
@@ -51,7 +52,7 @@ const Publish = ({ activeTab, setActiveTab }: IProps) => {
         </div>
 
         <Elements stripe={stripePromise}>
-          <CheckoutForm />
+          <CheckoutForm gigId={gigId} />
         </Elements>
       </div>
 
@@ -73,7 +74,7 @@ const Publish = ({ activeTab, setActiveTab }: IProps) => {
   );
 };
 
-const CheckoutForm: React.FC = () => {
+const CheckoutForm = ({ gigId }: { gigId: string }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -115,6 +116,7 @@ const CheckoutForm: React.FC = () => {
           email: "customer@example.com",
           paymentMethodId: paymentMethod?.id,
           price: dynamicPrice || 10,
+          gigId,
         }),
       }
     );
