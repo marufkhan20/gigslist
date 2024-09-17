@@ -30,35 +30,49 @@ app.use(
   })
 );
 
-app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
-  const sig = req.headers["stripe-signature"];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    const sig = req.headers["stripe-signature"];
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SIGN;
 
-  let event;
+    let event;
 
-  try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    console.log("event", event);
-  } catch (err) {
-    console.log(`⚠️  Webhook signature verification failed.`, err.message);
-    return res.sendStatus(400);
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      console.log("event", event);
+    } catch (err) {
+      console.log(`⚠️  Webhook signature verification failed.`, err.message);
+      return res.sendStatus(400);
+    }
+
+    switch (event.type) {
+      case "invoice.payment_succeeded":
+        const invoice = event.data.object;
+        const subscriptionId = invoice.subscription;
+
+        if (invoice.subscription) {
+          const subscriptionMetadata = invoice.lines.data[0]?.metadata; // Fetching metadata from the invoice line item
+          console.log("Subscription metadata:", subscriptionMetadata);
+        } else {
+          const subscription = await stripe.subscriptions.retrieve(
+            subscriptionId
+          );
+          console.log("else Subscription metadata:", subscription.metadata);
+        }
+        break;
+      case "customer.subscription.deleted":
+        const subscription = event.data.object;
+        console.log("Subscription deleted:", subscription);
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.sendStatus(200);
   }
-
-  switch (event.type) {
-    case "invoice.created":
-      const invoice = event.data.object;
-      console.log("Invoice payment succeeded:", invoice);
-      break;
-    case "customer.subscription.deleted":
-      const subscription = event.data.object;
-      console.log("Subscription deleted:", subscription);
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
-
-  res.sendStatus(200);
-});
+);
 
 app.use(morgan("dev"));
 app.use(express.json({ limit: "200mb" }));
