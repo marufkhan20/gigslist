@@ -11,6 +11,7 @@ const {
   billingRoutes,
   gigRoutes,
 } = require("./routes");
+const Gig = require("./models/Gig");
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config({
@@ -41,7 +42,6 @@ app.post(
 
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-      console.log("event", event);
     } catch (err) {
       console.log(`⚠️  Webhook signature verification failed.`, err.message);
       return res.sendStatus(400);
@@ -50,21 +50,23 @@ app.post(
     switch (event.type) {
       case "invoice.payment_succeeded":
         const invoice = event.data.object;
-        const subscriptionId = invoice.subscription;
 
         if (invoice.subscription) {
-          const subscriptionMetadata = invoice.lines.data[0]?.metadata; // Fetching metadata from the invoice line item
-          console.log("Subscription metadata:", subscriptionMetadata);
-        } else {
-          const subscription = await stripe.subscriptions.retrieve(
-            subscriptionId
-          );
-          console.log("else Subscription metadata:", subscription.metadata);
+          const subscriptionMetadata = invoice.lines.data[0]?.metadata;
+          const { gigId } = subscriptionMetadata;
+
+          // update gig status
+          Gig.findByIdAndUpdate(gigId, { $set: { status: "active" } });
         }
         break;
       case "customer.subscription.deleted":
-        const subscription = event.data.object;
-        console.log("Subscription deleted:", subscription);
+        if (invoice.subscription) {
+          const subscriptionMetadata = invoice.lines.data[0]?.metadata;
+          const { gigId } = subscriptionMetadata;
+
+          // update gig status
+          Gig.findByIdAndUpdate(gigId, { $set: { status: "deactive" } });
+        }
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);
