@@ -56,7 +56,11 @@ app.post(
           const { gigId } = subscriptionMetadata;
 
           // update gig status
-          Gig.findByIdAndUpdate(gigId, { $set: { status: "active" } });
+          const updatedGig = await Gig.findByIdAndUpdate(gigId, {
+            $set: { status: "active" },
+          });
+
+          console.log("updatedGig active", updatedGig);
         }
         break;
       case "customer.subscription.deleted":
@@ -65,7 +69,10 @@ app.post(
           const { gigId } = subscriptionMetadata;
 
           // update gig status
-          Gig.findByIdAndUpdate(gigId, { $set: { status: "deactive" } });
+          const updatedGig = await Gig.findByIdAndUpdate(gigId, {
+            $set: { status: "deactive" },
+          });
+          console.log("updatedGig deactive", updatedGig);
         }
         break;
       default:
