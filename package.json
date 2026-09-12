@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon api/app.js",
-    "start": "node api/app.js",
+    "dev": "node init && nodemon api/app.js",
+    "start": "node init && node api/app.js",
     "vercel-build": "echo hello"
   },
   "keywords": [],
